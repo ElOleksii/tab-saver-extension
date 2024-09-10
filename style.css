@@ -44,12 +44,12 @@ li {
   list-style: none;
 }
 
-ul {
+#open-tab-set-list {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  display: none;
 }
-
 .tab-set {
   font-size: 16px;
   display: inline;
