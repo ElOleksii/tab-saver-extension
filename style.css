@@ -7,10 +7,10 @@ body {
 }
 
 input {
-  width: calc(100% - 20px);
+  width: 100%;
   padding: 8px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #474747;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 14px;
@@ -47,10 +47,6 @@ li {
 #open-tab-set-list {
   display: flex;
   flex-direction: column;
-  gap: 5px;
   display: none;
-}
-.tab-set {
   font-size: 16px;
-  display: inline;
 }

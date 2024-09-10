@@ -16,8 +16,10 @@ const openTabs = (name) => {
   });
 };
 
-const getTabs = () => {
-  chrome.storage.local.get();
+const getTabs = (callback) => {
+  chrome.storage.local.get(null, (items) => {
+    callback(items);
+  });
 };
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -25,6 +27,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     saveTabs(request.name);
   } else if (request.action === "openTabs") {
     openTabs(request.name);
+  } else if (request.action === "getTabs") {
+    getTabs((tabs) => {
+      sendResponse(tabs);
+    });
+    return true;
   }
   sendResponse({ status: "done" });
 });
