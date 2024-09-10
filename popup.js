@@ -26,7 +26,22 @@ showTabsBtn.addEventListener("click", () => {
       console.log(res);
       Object.keys(res).forEach((key) => {
         const li = document.createElement("li");
-        li.innerText = key;
+
+        const span = document.createElement("span");
+        span.innerText = key;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-tab-btn";
+
+        const img = document.createElement("img");
+        img.src = "./img/delete-icon.svg";
+        img.alt = "delete-btn";
+
+        deleteBtn.appendChild(img);
+
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
+
         tabsList.appendChild(li);
       });
     });

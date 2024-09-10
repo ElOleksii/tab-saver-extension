@@ -9,9 +9,16 @@
   </head>
   <body>
     <input id="save-name" type="text" placeholder="Enter the name of tab set" />
-    <button id="save-tabs-btn">Save Tabs</button>
-    <button id="show-tabs-btn">Show Tab Sets</button>
-    <ul id="open-tab-set-list"></ul>
+    <button class="btn" id="save-tabs-btn">Save Tabs</button>
+    <button class="btn" id="show-tabs-btn">Show Tab Sets</button>
+    <ul id="open-tab-set-list">
+      <li>
+        <span>Exmpl</span
+        ><button class="delete-tab-btn">
+          <img src="./img/delete-icon.svg" alt="delete-btn" />
+        </button>
+      </li>
+    </ul>
     <script src="./popup.js"></script>
   </body>
 </html>
