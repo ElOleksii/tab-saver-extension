@@ -4,15 +4,39 @@ const showTabsBtn = document.getElementById("show-tabs-btn");
 const tabsList = document.getElementById("open-tab-set-list");
 let tabsListIsVisible = false;
 
+const renderTabList = () => {
+  tabsList.innerHTML = "";
+
+  chrome.runtime.sendMessage({ action: "getTabs" }).then((res) => {
+    console.log(res);
+    Object.keys(res).forEach((key) => {
+      const li = document.createElement("li");
+
+      li.innerHTML = `
+        <span>${key}</span>
+        <button class="delete-tab-btn">
+          <img src="./img/delete-icon.svg" alt="delete-btn" />
+        </button>
+      `;
+      tabsList.appendChild(li);
+
+      li.querySelector(".delete-tab-btn").addEventListener("click", () => {
+        chrome.runtime.sendMessage({ action: "deleteTab", name: key }, () => {
+          renderTabList();
+        });
+      });
+    });
+  });
+};
+
 saveTabsBtn.addEventListener("click", () => {
   const name = nameInput.value;
   if (name) {
-    chrome.runtime.sendMessage(
-      { action: "saveTabs", name: name },
-      function (response) {
-        console.log("Tabs saved:", response);
+    chrome.runtime.sendMessage({ action: "saveTabs", name: name }, () => {
+      if (tabsListIsVisible) {
+        renderTabList();
       }
-    );
+    });
     nameInput.value = "";
   }
 });
@@ -22,29 +46,7 @@ showTabsBtn.addEventListener("click", () => {
   if (tabsListIsVisible) {
     showTabsBtn.innerHTML = "Hide Tab Sets";
     tabsList.style.display = "block";
-    chrome.runtime.sendMessage({ action: "getTabs" }).then((res) => {
-      console.log(res);
-      Object.keys(res).forEach((key) => {
-        const li = document.createElement("li");
-
-        const span = document.createElement("span");
-        span.innerText = key;
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "delete-tab-btn";
-
-        const img = document.createElement("img");
-        img.src = "./img/delete-icon.svg";
-        img.alt = "delete-btn";
-
-        deleteBtn.appendChild(img);
-
-        li.appendChild(span);
-        li.appendChild(deleteBtn);
-
-        tabsList.appendChild(li);
-      });
-    });
+    renderTabList();
   } else {
     showTabsBtn.innerHTML = "Show Tab Sets";
     tabsList.style.display = "none";

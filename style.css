@@ -49,6 +49,7 @@ li {
   border-bottom: 1px solid #ddd;
   background-color: #f9f9f9;
   cursor: pointer;
+  z-index: 0;
 }
 
 #open-tab-set-list {
@@ -63,6 +64,7 @@ li {
   border: none;
   cursor: pointer;
   padding: 5px;
+  z-index: 1;
 }
 
 .delete-tab-btn img {

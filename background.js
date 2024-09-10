@@ -8,10 +8,10 @@ const saveTabs = (name) => {
 };
 
 const openTabs = (name) => {
-  chrome.storage.local.get([name], function (result) {
+  chrome.storage.local.get([name], (result) => {
     const urls = result[name];
     if (urls) {
-      chrome.winows.create({ url: urls });
+      chrome.windows.create({ url: urls, state: "normal" });
       // urls.forEach((url) => chrome.tabs.create({ url }));
     }
   });
@@ -20,6 +20,13 @@ const openTabs = (name) => {
 const getTabs = (callback) => {
   chrome.storage.local.get(null, (items) => {
     callback(items);
+  });
+};
+
+const deleteTab = (key) => {
+  console.log(`Is attempting to delete ${key}`);
+  chrome.storage.local.remove(key, () => {
+    console.log(`Tab set "${key}" has been deleted.`);
   });
 };
 
@@ -33,6 +40,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse(tabs);
     });
     return true;
+  } else if (request.action === "deleteTab") {
+    deleteTab(request.name);
   }
   sendResponse({ status: "done" });
 });
