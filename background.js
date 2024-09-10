@@ -11,7 +11,8 @@ const openTabs = (name) => {
   chrome.storage.local.get([name], function (result) {
     const urls = result[name];
     if (urls) {
-      urls.forEach((url) => chrome.tabs.create({ url }));
+      chrome.winows.create({ url: urls });
+      // urls.forEach((url) => chrome.tabs.create({ url }));
     }
   });
 };
