@@ -25,6 +25,11 @@ const renderTabList = () => {
           renderTabList();
         });
       });
+      li.addEventListener("click", () => {
+        chrome.runtime.sendMessage({ action: "openTabs", name: key }, () => {
+          console.log("worked");
+        });
+      });
     });
   });
 };

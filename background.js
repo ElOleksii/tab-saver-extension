@@ -11,8 +11,7 @@ const openTabs = (name) => {
   chrome.storage.local.get([name], (result) => {
     const urls = result[name];
     if (urls) {
-      chrome.windows.create({ url: urls, state: "normal" });
-      // urls.forEach((url) => chrome.tabs.create({ url }));
+      chrome.windows.create({ url: urls, state: "maximized" });
     }
   });
 };
@@ -24,10 +23,7 @@ const getTabs = (callback) => {
 };
 
 const deleteTab = (key) => {
-  console.log(`Is attempting to delete ${key}`);
-  chrome.storage.local.remove(key, () => {
-    console.log(`Tab set "${key}" has been deleted.`);
-  });
+  chrome.storage.local.remove(key);
 };
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
