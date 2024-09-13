@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Tab Saver",
   "version": "1.0",
-  "description": "Save and open sets of Chrome tabs.",
+  "description": "Save and open sets of Chrome Tabs.",
   "permissions": ["tabs", "storage"],
   "background": {
     "service_worker": "background.js"
