@@ -79,3 +79,54 @@ li {
 li:hover {
   background-color: #e0e0e0;
 }
+
+#popup-confirm {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 85%;
+}
+.popup-content p {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.popup-btn {
+  padding: 5px 10px;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+
+  transition: background-color 0.3s;
+}
+
+#confirm-overwrite {
+  background-color: #28a745;
+}
+#confirm-overwrite:hover {
+  background-color: #218838;
+}
+
+#decline-overwrite {
+  background-color: #dc3545;
+}
+
+#decline-overwrite:hover {
+  background-color: #c82333;
+}

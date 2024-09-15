@@ -1,8 +1,22 @@
 const nameInput = document.getElementById("save-name");
 const saveTabsBtn = document.getElementById("save-tabs-btn");
 const showTabsBtn = document.getElementById("show-tabs-btn");
+const confirmOverwriteBtn = document.getElementById("confirm-overwrite");
+const declineOverwriteBtn = document.getElementById("decline-overwrite");
+const popupConfirm = document.getElementById("popup-confirm");
 const tabsList = document.getElementById("open-tab-set-list");
 let tabsListIsVisible = false;
+let tabSetNameToOverwirte = "";
+
+const isTabSetAlreadyExist = (name, callback) => {
+  chrome.storage.local.get([name], (result) => {
+    if (result[name]) {
+      callback(true);
+    } else {
+      callback(false);
+    }
+  });
+};
 
 const renderTabList = () => {
   tabsList.innerHTML = "";
@@ -36,13 +50,34 @@ const renderTabList = () => {
 
 saveTabsBtn.addEventListener("click", () => {
   const name = nameInput.value;
+
   if (name) {
-    chrome.runtime.sendMessage({ action: "saveTabs", name: name }, () => {
-      if (tabsListIsVisible) {
-        renderTabList();
+    isTabSetAlreadyExist(name, (exists) => {
+      if (exists) {
+        tabSetNameToOverwirte = name;
+        popupConfirm.style.display = "flex";
+
+        confirmOverwriteBtn.addEventListener("click", () => {
+          chrome.runtime.sendMessage({ action: "saveTabs", name: name }, () => {
+            if (tabsListIsVisible) {
+              renderTabList();
+            }
+            popupConfirm.style.display = "none";
+          });
+        });
+
+        declineOverwriteBtn.addEventListener("click", () => {
+          popupConfirm.style.display = "none";
+        });
+      } else {
+        chrome.runtime.sendMessage({ action: "saveTabs", name: name }, () => {
+          if (tabsListIsVisible) {
+            renderTabList();
+          }
+        });
+        nameInput.value = "";
       }
     });
-    nameInput.value = "";
   }
 });
 
@@ -57,14 +92,4 @@ showTabsBtn.addEventListener("click", () => {
     tabsList.style.display = "none";
     tabsList.innerHTML = "";
   }
-
-  // const name = nameInput.value;
-  // if (name) {
-  //   chrome.runtime.sendMessage(
-  //     { action: "openTabs", name: name },
-  //     function (response) {
-  //       console.log("Tabs saved:", response);
-  //     }
-  //   );
-  // }
 });

@@ -12,6 +12,15 @@
     <button class="btn" id="save-tabs-btn">Save Tabs</button>
     <button class="btn" id="show-tabs-btn">Show Tab Sets</button>
     <ul id="open-tab-set-list"></ul>
+    <div id="popup-confirm" style="display: none">
+      <div class="popup-content">
+        <p>
+          A tab set with this name already exist. Do you want to overwrite tabs?
+        </p>
+        <button class="popup-btn" id="confirm-overwrite">Yes</button>
+        <button class="popup-btn" id="decline-overwrite">No</button>
+      </div>
+    </div>
     <script src="./popup.js"></script>
   </body>
 </html>
