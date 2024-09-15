@@ -1,9 +1,6 @@
 const nameInput = document.getElementById("save-name");
 const saveTabsBtn = document.getElementById("save-tabs-btn");
 const showTabsBtn = document.getElementById("show-tabs-btn");
-const confirmOverwriteBtn = document.getElementById("confirm-overwrite");
-const declineOverwriteBtn = document.getElementById("decline-overwrite");
-const popupConfirm = document.getElementById("popup-confirm");
 const tabsList = document.getElementById("open-tab-set-list");
 let tabsListIsVisible = false;
 let tabSetNameToOverwirte = "";
@@ -55,19 +52,34 @@ saveTabsBtn.addEventListener("click", () => {
     isTabSetAlreadyExist(name, (exists) => {
       if (exists) {
         tabSetNameToOverwirte = name;
-        popupConfirm.style.display = "flex";
+        const div = document.createElement("div");
+        div.className = "popup-confirm";
+        div.innerHTML = `
+      <div class="popup-content">
+        <p>
+          A tab set with this name already exist. Do you want to overwrite tabs?
+        </p>
+        <button class="popup-btn" id="confirm-overwrite">Yes</button>
+        <button class="popup-btn" id="decline-overwrite">No</button>
+      </div>`;
+        document.body.appendChild(div);
+
+        const confirmOverwriteBtn =
+          document.getElementById("confirm-overwrite");
+        const declineOverwriteBtn =
+          document.getElementById("decline-overwrite");
 
         confirmOverwriteBtn.addEventListener("click", () => {
           chrome.runtime.sendMessage({ action: "saveTabs", name: name }, () => {
             if (tabsListIsVisible) {
               renderTabList();
             }
-            popupConfirm.style.display = "none";
+            document.body.removeChild(div);
           });
         });
 
         declineOverwriteBtn.addEventListener("click", () => {
-          popupConfirm.style.display = "none";
+          document.body.removeChild(div);
         });
       } else {
         chrome.runtime.sendMessage({ action: "saveTabs", name: name }, () => {
