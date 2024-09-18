@@ -6,7 +6,7 @@ let tabsListIsVisible = false;
 let tabSetNameToOverwirte = "";
 
 const isTabSetAlreadyExist = (name, callback) => {
-  chrome.storage.local.get([name], (result) => {
+  chrome.storage.sync.get([name], (result) => {
     if (result[name]) {
       callback(true);
     } else {

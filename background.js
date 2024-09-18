@@ -1,14 +1,14 @@
 const saveTabs = (name) => {
   chrome.tabs.query({ currentWindow: true }, function (tabs) {
     const urls = tabs.map((tab) => tab.url);
-    chrome.storage.local.set({ [name]: urls }, function () {
+    chrome.storage.sync.set({ [name]: urls }, function () {
       console.log("Tabs saved under the name:", name);
     });
   });
 };
 
 const openTabs = (name) => {
-  chrome.storage.local.get([name], (result) => {
+  chrome.storage.sync.get([name], (result) => {
     const urls = result[name];
     if (urls) {
       chrome.windows.create({ url: urls, state: "maximized" });
@@ -17,13 +17,13 @@ const openTabs = (name) => {
 };
 
 const getTabs = (callback) => {
-  chrome.storage.local.get(null, (items) => {
+  chrome.storage.sync.get(null, (items) => {
     callback(items);
   });
 };
 
 const deleteTab = (key) => {
-  chrome.storage.local.remove(key);
+  chrome.storage.sync.remove(key);
 };
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
