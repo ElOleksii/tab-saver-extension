@@ -74,6 +74,7 @@ saveTabsBtn.addEventListener("click", () => {
             if (tabsListIsVisible) {
               renderTabList();
             }
+            nameInput.value = "";
             document.body.removeChild(div);
           });
         });
@@ -105,3 +106,12 @@ showTabsBtn.addEventListener("click", () => {
     tabsList.innerHTML = "";
   }
 });
+
+setInterval(() => {
+  chrome.storage.sync.getBytesInUse(null, (bytesInUse) => {
+    console.log(`Storage used: ${bytesInUse} bytes out of 102,400 bytes`);
+  });
+  chrome.storage.sync.get(null, (items) => {
+    console.log(items);
+  });
+}, 60000);
