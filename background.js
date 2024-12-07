@@ -2,7 +2,11 @@ const saveTabs = (name) => {
   chrome.tabs.query({ currentWindow: true }, function (tabs) {
     const urls = tabs.map((tab) => tab.url);
     chrome.storage.sync.set({ [name]: urls }, function () {
-      console.log("Tabs saved under the name:", name);
+      if (chrome.runtime.lastError) {
+        console.error("Error saving tabs:", chrome.runtime.lastError);
+      } else {
+        console.log("Tabs saved under the name:", name);
+      }
     });
   });
 };
@@ -40,4 +44,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     deleteTab(request.name);
   }
   sendResponse({ status: "done" });
+});
+
+chrome.runtime.onStartup.addListener(() => {
+  chrome.storage.sync.get(null, (items) => {
+    console.log("Synced items on startup:", items);
+  });
 });

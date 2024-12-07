@@ -18,6 +18,10 @@ const isTabSetAlreadyExist = (name, callback) => {
 const renderTabList = () => {
   tabsList.innerHTML = "";
 
+  chrome.storage.sync.get(null, (items) => {
+    console.log("Synced items:", items);
+  });
+
   chrome.runtime.sendMessage({ action: "getTabs" }).then((res) => {
     console.log(res);
     Object.keys(res).forEach((key) => {
@@ -114,4 +118,4 @@ setInterval(() => {
   chrome.storage.sync.get(null, (items) => {
     console.log(items);
   });
-}, 60000);
+}, 1000);
